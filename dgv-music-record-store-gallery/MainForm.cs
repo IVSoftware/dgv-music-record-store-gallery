@@ -22,118 +22,86 @@ namespace dgv_music_record_store_gallery
                     col.Width = 200;
                     col.DefaultCellStyle.Padding = new System.Windows.Forms.Padding(10);
                     col.DefaultCellStyle.BackColor = Color.FromArgb(0x22, 0x22, 0x22);
+                    col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
             }
-            var fcol = dataGridViewGallery.Columns[nameof(FourUp.Filler)];
-            fcol.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            fcol.HeaderText = string.Empty;
-            fcol.DefaultCellStyle.BackColor = Color.Azure;
+            var column = dataGridViewGallery.Columns[nameof(FourUp.Description)];
+            column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            column.HeaderText = string.Empty;
+            column.DefaultCellStyle.BackColor = Color.Azure;
+            column.DefaultCellStyle.WrapMode = DataGridViewTriState.True;  
             Gallery.Clear();
             #endregion F O R M A T    C O L U M N S
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
             int count = 0;
+            List<string> descriptions = new List<string>();
             FourUp fourUp = null;
 
-            // Add a bunch of (duplicate) records;
-            for (int i = 0; i < 10; i++)
+            // Add everything in the Images folder.
+            foreach (var image in Directory.GetFiles(path))
             {
-                foreach (var image in Directory.GetFiles(path))
+                var mod = count % 4;
+                if (mod.Equals(0))
                 {
-                    var mod = count % 4;
-                    if (mod.Equals(0))
-                    {
-                        fourUp = new FourUp();
-                        Gallery.Add(fourUp);
-                    }
-                    fourUp[mod] = Image.FromFile(image);
-                    count++;
+                    descriptions.Clear();
+                    fourUp = new FourUp();
+                    Gallery.Add(fourUp);
                 }
+                descriptions.Add(Path.GetFileNameWithoutExtension(image));
+                fourUp[mod] = Image.FromFile(image);
+                fourUp.Description = string.Join(Environment.NewLine, descriptions);
+                count++;
             }
+            dataGridViewGallery.Refresh();
             dataGridViewGallery.ClearSelection();
+            dataGridViewGallery.CellContentClick += onCellContentClick;
         }
+
+        private void onCellContentClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         BindingList<FourUp> Gallery { get; } = new BindingList<FourUp>();
     }
     class FourUp : INotifyPropertyChanged
     {
+        string _description = string.Empty;
+        public string Description
+        {
+            get => _description;
+            set
+            {
+                if (!Equals(_description, value))
+                {
+                    _description = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         public Image this[int index]
         {
-            get
-            {
-                var name = $"Image{(char)('A' + index)}";
-                return (Image)(typeof(FourUp).GetProperty(name)?.GetValue(this));
-            }
+            get => _images[index];
             set
             {
                 var name = $"Image{(char)('A' + index)}";
-                typeof(FourUp).GetProperty(name)?.SetValue(this, value);
+                _images[index] = value;
             }
         }
-        private Image[] _images;
+        private Image[] _images = 
+            Enumerable.Range(0,4).Select(_=>new Bitmap(32,32)).ToArray();
 
-        Image _imageA = new Bitmap(32,32);
-        public Image ImageA
-        {
-            get => _imageA;
-            set
-            {
-                if (!Equals(_imageA, value))
-                {
-                    _imageA = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        Image _imageB = new Bitmap(32, 32);
-        public Image ImageB
-        {
-            get => _imageB;
-            set
-            {
-                if (!Equals(_imageB, value))
-                {
-                    _imageB = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        Image _imageC = new Bitmap(32, 32);
-        public Image ImageC
-        {
-            get => _imageC;
-            set
-            {
-                if (!Equals(_imageC, value))
-                {
-                    _imageC = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        Image _imageD = new Bitmap(32, 32);
-        public Image ImageD
-        {
-            get => _imageD;
-            set
-            {
-                if (!Equals(_imageD, value))
-                {
-                    _imageD = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
+        Image _image1 = new Bitmap(32,32);
+        public Image ImageA => _images[0];
+        public Image ImageB => _images[1];
+        public Image ImageC => _images[2];
+        public Image ImageD => _images[3];
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
-            //PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-
-        public string Filler => string.Empty;
     }
 }

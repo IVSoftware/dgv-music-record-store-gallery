@@ -32,24 +32,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGallery)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dataGridViewGallery
             // 
             this.dataGridViewGallery.AllowUserToAddRows = false;
             this.dataGridViewGallery.AllowUserToDeleteRows = false;
             this.dataGridViewGallery.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGallery.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewGallery.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewGallery.Name = "dataGridView1";
+            this.dataGridViewGallery.Name = "dataGridViewGallery";
             this.dataGridViewGallery.ReadOnly = true;
             this.dataGridViewGallery.RowHeadersWidth = 62;
-            this.dataGridViewGallery.Size = new System.Drawing.Size(800, 450);
+            this.dataGridViewGallery.Size = new System.Drawing.Size(1178, 394);
             this.dataGridViewGallery.TabIndex = 0;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1178, 394);
             this.Controls.Add(this.dataGridViewGallery);
             this.Name = "MainForm";
             this.Text = "Main Form";
