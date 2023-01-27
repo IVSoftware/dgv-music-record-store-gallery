@@ -75,7 +75,6 @@ namespace dgv_music_record_store_gallery
                 }
             }
         }
-
         BindingList<FourUp> Gallery { get; } = new BindingList<FourUp>();
     }
     class FourUp : INotifyPropertyChanged
