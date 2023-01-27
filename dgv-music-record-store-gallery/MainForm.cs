@@ -35,7 +35,6 @@ namespace dgv_music_record_store_gallery
 
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Images");
             int count = 0;
-            List<string> descriptions = new List<string>();
             FourUp fourUp = null;
 
             // Add everything in the Images folder.
@@ -44,13 +43,11 @@ namespace dgv_music_record_store_gallery
                 var mod = count % 4;
                 if (mod.Equals(0))
                 {
-                    descriptions.Clear();
                     fourUp = new FourUp();
                     Gallery.Add(fourUp);
                 }
-                descriptions.Add(Path.GetFileNameWithoutExtension(image));
-                fourUp[mod] = Image.FromFile(image);
-                fourUp.Description = string.Join(Environment.NewLine, descriptions);
+                fourUp.Descriptions[mod] = Path.GetFileNameWithoutExtension(image);
+                fourUp.Images[mod] = Image.FromFile(image);
                 count++;
             }
             dataGridViewGallery.Refresh();
@@ -60,43 +57,42 @@ namespace dgv_music_record_store_gallery
 
         private void onCellContentClick(object? sender, DataGridViewCellEventArgs e)
         {
-            throw new NotImplementedException();
+            if((e.RowIndex != -1) && (e.ColumnIndex != -1))
+            {
+                if (dataGridViewGallery[e.ColumnIndex, e.RowIndex] is DataGridViewImageCell imageCell)
+                {
+                    int index;
+                    switch (dataGridViewGallery.Columns[e.ColumnIndex].Name)
+                    {
+                        case nameof(FourUp.ImageA): index = 0; break;
+                        case nameof(FourUp.ImageB): index = 1; break;
+                        case nameof(FourUp.ImageC): index = 2; break;
+                        case nameof(FourUp.ImageD): index = 3; break;
+                        default: return;
+                    }
+                    var fourUp = Gallery[e.RowIndex];
+                    MessageBox.Show($"Column {e.ColumnIndex} Row {e.RowIndex} {fourUp.Descriptions[index]}");
+                }
+            }
         }
 
         BindingList<FourUp> Gallery { get; } = new BindingList<FourUp>();
     }
     class FourUp : INotifyPropertyChanged
     {
-        string _description = string.Empty;
-        public string Description
-        {
-            get => _description;
-            set
-            {
-                if (!Equals(_description, value))
-                {
-                    _description = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public Image this[int index]
-        {
-            get => _images[index];
-            set
-            {
-                var name = $"Image{(char)('A' + index)}";
-                _images[index] = value;
-            }
-        }
-        private Image[] _images = 
+        public string Description =>
+            string.Join(Environment.NewLine, Descriptions);
+        public string[] Descriptions =
+            Enumerable.Repeat(string.Empty, 4).ToArray();
+
+        public Image[] Images = 
             Enumerable.Range(0,4).Select(_=>new Bitmap(32,32)).ToArray();
 
         Image _image1 = new Bitmap(32,32);
-        public Image ImageA => _images[0];
-        public Image ImageB => _images[1];
-        public Image ImageC => _images[2];
-        public Image ImageD => _images[3];
+        public Image ImageA => Images[0];
+        public Image ImageB => Images[1];
+        public Image ImageC => Images[2];
+        public Image ImageD => Images[3];
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
