@@ -52,6 +52,7 @@
             this.ClientSize = new System.Drawing.Size(1178, 394);
             this.Controls.Add(this.dataGridViewGallery);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Form";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGallery)).EndInit();
             this.ResumeLayout(false);
