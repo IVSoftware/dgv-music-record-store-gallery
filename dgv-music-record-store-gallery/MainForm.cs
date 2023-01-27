@@ -77,7 +77,7 @@ namespace dgv_music_record_store_gallery
         }
         BindingList<FourUp> Gallery { get; } = new BindingList<FourUp>();
     }
-    class FourUp : INotifyPropertyChanged
+    class FourUp
     {
         public string Description =>
             string.Join(Environment.NewLine, Descriptions);
@@ -92,11 +92,5 @@ namespace dgv_music_record_store_gallery
         public Image ImageB => Images[1];
         public Image ImageC => Images[2];
         public Image ImageD => Images[3];
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

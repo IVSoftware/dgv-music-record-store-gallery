@@ -1,10 +1,12 @@
-Your question shows a gallery of images made from Panel. You mention that there will be thousands of images. A `DataGridView` would more ideal for this. 
+Your question shows a gallery of images made from Panel anf you want to be able to click on an image to retrieve some information about it. You mention that there will be thousands of images. 
+
+A `DataGridView` would more ideal for this. 
 
 ![screenshot](https://github.com/IVSoftware/dgv-music-record-store-gallery/blob/master/dgv-music-record-store-gallery/Screenshots/screenshot.png)
 
 Just make a class to represent a row:
 
-    class FourUp : INotifyPropertyChanged
+    class FourUp
     {
         public string Description =>
             string.Join(Environment.NewLine, Descriptions);
@@ -19,14 +21,9 @@ Just make a class to represent a row:
         public Image ImageB => Images[1];
         public Image ImageC => Images[2];
         public Image ImageD => Images[3];
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-           PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
+***
 Then read your images from disk or from a database to initialize the row objects:
 
     public partial class MainForm : Form
