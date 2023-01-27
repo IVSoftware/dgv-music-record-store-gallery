@@ -4,6 +4,7 @@ A `DataGridView` would more ideal for this.
 
 ![screenshot](https://github.com/IVSoftware/dgv-music-record-store-gallery/blob/master/dgv-music-record-store-gallery/Screenshots/screenshot.png)
 
+***
 Just make a class to represent a row:
 
     class FourUp
