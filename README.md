@@ -1,4 +1,4 @@
-Your question shows a gallery of images made from Panel anf you want to be able to click on an image to retrieve some information about it. You mention that there will be thousands of images. 
+Your question shows a gallery of images made from Panel and you want to be able to click on an image to retrieve some information about it. You mention that there will be thousands of images. 
 
 A `DataGridView` would more ideal for this. 
 
